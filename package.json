@@ -1,18 +1,24 @@
 {
-  "name": "my-lightweight-css",
+  "name": "my-css-utilities",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "files": [
+    "src",
+    "index.js",
+    "cli.js"
+  ],
   "scripts": {
     "dev": "postcss src/css/main.css -o dist/style.css -w",
     "build": "cross-env NODE_ENV=production postcss src/css/main.css -o dist/style.css"
   },
-  "keywords": [],
+  "keywords": ["css", "utilities", "postcss", "postcss-plugin"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^7.0.2",
     "cross-env": "^7.0.3",
+    "fs-extra": "^11.3.0",
     "postcss": "^8.5.3",
     "postcss-cli": "^11.0.1"
   }

@@ -1,17 +1,15 @@
-const postcss = require('postcss');
 const defaultConfig = require('./default-config.js');
 const { mergeDeep, getThemeValue } = require('./utils.js');
 const { generateUtilities, generateArrayOrRawValueUtilities, generateNestedColorUtilities } = require('./utility-generators.js');
 
 module.exports = (userConfig = {}) => {
-  const finalConfig = mergeDeep(defaultConfig, userConfig);
-  const theme = finalConfig.theme || {};
-  const utilityDefinitions = finalConfig.utilities || [];
+    const finalTheme = mergeDeep(defaultConfig.theme, userConfig.theme || {});
+    const finalUtilities = mergeDeep(defaultConfig.utilities, userConfig.utilities || []); // TODO: deep merge(array)
 
   return {
     postcssPlugin: 'my-custom-utility-generator',
     Once(root) {
-      const utilities = getPostCssUtilities({ utilityDefinitions, theme })
+      const utilities = getPostCssUtilities({ utilityDefinitions: finalUtilities, theme: finalTheme })
 
       if (utilities.length > 0) root.append(...utilities);
     }
@@ -46,4 +44,6 @@ function getPostCssUtilities({ utilityDefinitions, theme }) {
             }
         });
     });
+
+    return generatedUtilities;
 }

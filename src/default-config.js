@@ -52,5 +52,5 @@ module.exports = {
                 { selectorPattern: '.hidden', prop: 'display', value: 'none' },
             ]
         }
-  ]
+    ]
 }

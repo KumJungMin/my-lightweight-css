@@ -1,0 +1,19 @@
+{
+  "name": "my-lightweight-css",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "postcss src/css/main.css -o dist/style.css -w",
+    "build": "cross-env NODE_ENV=production postcss src/css/main.css -o dist/style.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^7.0.2",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.1"
+  }
+}

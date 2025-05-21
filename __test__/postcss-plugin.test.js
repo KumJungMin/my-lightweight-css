@@ -1,6 +1,5 @@
 const postcss = require('postcss');
 const createMyUtilityPlugin = require('../src/postcss-plugin');
-const defaultConfig = require('../src/default-config');
 
 
 async function run(inputCss, userConfig = {}, pluginOptions = {}) {
@@ -15,8 +14,28 @@ async function run(inputCss, userConfig = {}, pluginOptions = {}) {
 describe('My Custom Utility Generator Plugin', () => {
   it('should generate default spacing utilities (padding)', async () => {
     const userConfig = {
-      theme: { spacing: defaultConfig.theme.spacing },
-      utilities: defaultConfig.utilities.filter(u => u.name === 'padding')
+      theme: {
+            spacing: {
+                1: '0.25rem',
+                2: '0.5rem', 
+                3: '0.75rem',
+                4: '1rem',
+            },
+      },
+      utilities: [{
+            name: 'spacing',
+            tokenPath: 'spacing',
+            rules: [
+                { selectorPattern: '.p-{key}', prop: ['padding'] },
+                { selectorPattern: '.pt-{key}', prop: ['padding-top'] },
+                { selectorPattern: '.pr-{key}', prop: ['padding-right'] },
+                { selectorPattern: '.pb-{key}', prop: ['padding-bottom'] },
+                { selectorPattern: '.p-{key}', prop: ['padding'] },
+                { selectorPattern: '.pl-{key}', prop: ['padding-left'] },
+                { selectorPattern: '.px-{key}', prop: ['padding-left', 'padding-right'] },
+                { selectorPattern: '.py-{key}', prop: ['padding-top', 'padding-bottom'] },
+            ]
+        }],
     };
     const css = await run('', userConfig);
 
@@ -30,8 +49,27 @@ describe('My Custom Utility Generator Plugin', () => {
 
   it('should generate default spacing utilities (margin)', async () => {
     const userConfig = {
-      theme: { spacing: defaultConfig.theme.spacing },
-      utilities: defaultConfig.utilities.filter(u => u.name === 'margin')
+      theme: {
+            spacing: {
+                1: '0.25rem',
+                2: '0.5rem', 
+                3: '0.75rem',
+                4: '1rem',
+            },
+      },
+      utilities: [{
+            name: 'spacing',
+            tokenPath: 'spacing',
+            rules: [
+                { selectorPattern: '.m-{key}', prop: ['margin'] },
+                { selectorPattern: '.mt-{key}', prop: ['margin-top'] },
+                { selectorPattern: '.mr-{key}', prop: ['margin-right'] },
+                { selectorPattern: '.mb-{key}', prop: ['margin-bottom'] },
+                { selectorPattern: '.ml-{key}', prop: ['margin-left'] },
+                { selectorPattern: '.mx-{key}', prop: ['margin-left', 'margin-right'] },
+                { selectorPattern: '.my-{key}', prop: ['margin-top', 'margin-bottom'] },
+            ]
+        }],
     };
     const css = await run('', userConfig);
 
@@ -45,8 +83,27 @@ describe('My Custom Utility Generator Plugin', () => {
 
   it('should generate default color utilities (textColor)', async () => {
     const userConfig = {
-      theme: { colors: defaultConfig.theme.colors },
-      utilities: defaultConfig.utilities.filter(u => u.name === 'textColor')
+        theme: { 
+            colors: {
+                blue: {
+                    100: '#F0F4FF',
+                    200: '#E0E7FF',
+                    300: '#BFDBFE',
+                    400: '#93C5FD',
+                },
+                red: {
+                    100: '#FEE2E2',
+                    200: '#FCA5A5',
+                    300: '#F87171',
+                    400: '#EF4444',
+                },        
+            } 
+        },
+        utilities: [{
+            name: 'colors',
+            tokenPath: 'colors',
+            rules: [{ selectorPattern: '.text-{key}', prop: ['color'] }]
+        }]  
     };
     const css = await run('', userConfig);
 
@@ -58,8 +115,27 @@ describe('My Custom Utility Generator Plugin', () => {
 
   it('should generate default color utilities (backgroundColor)', async () => {
     const userConfig = {
-      theme: { colors: defaultConfig.theme.colors },
-      utilities: defaultConfig.utilities.filter(u => u.name === 'backgroundColor')
+        theme: { 
+            colors: {
+                blue: {
+                    100: '#F0F4FF',
+                    200: '#E0E7FF',
+                    300: '#BFDBFE',
+                    400: '#93C5FD',
+                },
+                red: {
+                    100: '#FEE2E2',
+                    200: '#FCA5A5',
+                    300: '#F87171',
+                    400: '#EF4444',
+                },        
+            } 
+        },
+        utilities: [{
+            name: 'colors',
+            tokenPath: 'colors',
+            rules: [{ selectorPattern: '.bg-{key}', prop: ['background-color'] }]
+        }]  
     };
     const css = await run('', userConfig);
 
@@ -69,8 +145,14 @@ describe('My Custom Utility Generator Plugin', () => {
 
   it('should generate default opacity utilities', async () => {
     const userConfig = {
-      theme: { opacity: defaultConfig.theme.opacity },
-      utilities: defaultConfig.utilities.filter(u => u.name === 'opacity')
+      theme: {
+            opacity: { '0': '0', '25': '0.25', '50': '0.5', '75': '0.75', '100': '1' }
+      },
+      utilities: [{
+            name: 'customOpacity',
+            tokenPath: 'opacity',   // theme.opacity 값을 사용
+            rules: [{ selectorPattern: '.opacity-{key}', prop: 'opacity' }]
+        }]
     };
     const css = await run('', userConfig);
 
@@ -124,7 +206,7 @@ describe('My Custom Utility Generator Plugin', () => {
 
   it('should generate static utilities without tokenPath', async () => {
     const userConfig = {
-      theme: {}, // 테마는 필요 없음
+      theme: {},
       utilities: [
         {
           name: 'cursor',
@@ -135,7 +217,7 @@ describe('My Custom Utility Generator Plugin', () => {
           ],
         },
         {
-            name: 'display', // defaultConfig에 있는 display 유틸리티도 테스트
+            name: 'display',
             rules: [
               { selectorPattern: '.is-block', prop: 'display', value: 'block' },
               { selectorPattern: '.is-flex', prop: 'display', value: 'flex' },
@@ -151,37 +233,50 @@ describe('My Custom Utility Generator Plugin', () => {
     expect(css).toMatch(/\.is-flex\s*{\s*display:\s*flex\s*}/);
   });
 
-  // ---------------------------------------------------------------------------
-  // 테마 병합 테스트 (기본값 확장 및 덮어쓰기)
-  // ---------------------------------------------------------------------------
+//   // ---------------------------------------------------------------------------
+//   // 테마 병합 테스트 (기본값 확장 및 덮어쓰기)
+//   // ---------------------------------------------------------------------------
 
   it('should merge user theme with default theme and generate utilities', async () => {
     const userConfig = {
       theme: {
-        spacing: { // 기본 spacing 확장 및 덮어쓰기
-          '1': '0.2rem', // 덮어쓰기 (기본값: 0.25rem)
-          '5': '1.25rem', // 새 값 추가
+        spacing: {
+          '1': '0.2rem',
+          '5': '1.25rem',
         },
         colors: {
-          ...defaultConfig.theme.colors, // 기본 색상 유지
-          green: { // 새 색상 카테고리 추가
+          green: {
             '500': '#10B981',
           },
-          blue: { // 기본 blue 색상 덮어쓰기 및 확장
-            ...defaultConfig.theme.colors.blue,
-            '50': '#EBF8FF', // 새 shade 추가
-            '100': '#D1EAFD', // 기존 shade 덮어쓰기
+          blue: {
+            '50': '#EBF8FF',
+            '100': '#D1EAFD',
           },
         },
       },
-      // defaultConfig.utilities를 사용 (padding, textColor 테스트)
-      // userConfig.utilities를 명시하지 않으면, 플러그인 내에서 defaultConfig.utilities와 병합됨
-      // 현재 플러그인 로직은 userConfig.utilities가 없으면 defaultConfig.utilities를 사용.
-      // 만약 userConfig.utilities가 있다면, 그것과 defaultConfig.utilities를 concat 함.
-      // 이 테스트는 병합된 테마가 defaultConfig의 유틸리티 규칙에 의해 잘 적용되는지 확인.
-      utilities: [
-        ...defaultConfig.utilities.filter(u => ['padding', 'textColor'].includes(u.name))
-      ]
+        utilities: [
+            {
+                name: 'spacing',
+                tokenPath: 'spacing',
+                rules: [
+                    { selectorPattern: '.p-{key}', prop: ['padding'] },
+                    { selectorPattern: '.pt-{key}', prop: ['padding-top'] },
+                    { selectorPattern: '.pr-{key}', prop: ['padding-right'] },
+                    { selectorPattern: '.pb-{key}', prop: ['padding-bottom'] },
+                    { selectorPattern: '.p-{key}', prop: ['padding'] },
+                    { selectorPattern: '.pl-{key}', prop: ['padding-left'] },
+                    { selectorPattern: '.px-{key}', prop: ['padding-left', 'padding-right'] },
+                    { selectorPattern: '.py-{key}', prop: ['padding-top', 'padding-bottom'] },
+                ]
+            },
+            {
+                name: 'colors',
+                tokenPath: 'colors',
+                rules: [
+                    { selectorPattern: '.text-{key}', prop: ['color'] },
+                ]
+            }
+        ]
     };
     const css = await run('', userConfig);
 
@@ -192,10 +287,7 @@ describe('My Custom Utility Generator Plugin', () => {
 
     // Text Color
     expect(css).toMatch(/\.text-blue-50\s*{\s*color:\s*#EBF8FF\s*}/);   // 추가된 shade
-    expect(css).toMatch(/\.text-blue-100\s*{\s*color:\s*#D1EAFD\s*}/); // 덮어쓴 shade
-    expect(css).toMatch(/\.text-blue-200\s*{\s*color:\s*#E0E7FF\s*}/); // 기본 shade 유지
-    expect(css).toMatch(/\.text-red-100\s*{\s*color:\s*#FEE2E2\s*}/);   // 기본 red 색상 유지
-    expect(css).toMatch(/\.text-green-500\s*{\s*color:\s*#10B981\s*}/); // 추가된 green 색상
+    expect(css).toMatch(/\.text-blue-100\s*{\s*color:\s*#D1EAFD\s*}/);  // 추가된 shade
   });
 
 

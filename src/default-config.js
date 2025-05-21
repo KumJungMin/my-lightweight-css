@@ -8,14 +8,15 @@ module.exports = {
             3: '0.75rem',
             4: '1rem',
         },
+        
         colors: {
-            primary: {
+            blue: {
                 100: '#F0F4FF',
                 200: '#E0E7FF',
                 300: '#BFDBFE',
                 400: '#93C5FD',
             },
-            secondary: {
+            red: {
                 100: '#FEE2E2',
                 200: '#FCA5A5',
                 300: '#F87171',
@@ -50,6 +51,37 @@ module.exports = {
                 { selectorPattern: '.inline-block', prop: 'display', value: 'inline-block' },
                 { selectorPattern: '.flex', prop: 'display', value: 'flex' },
                 { selectorPattern: '.hidden', prop: 'display', value: 'none' },
+            ]
+        },
+        {
+            name: 'spacing', // 테마 토큰을 사용하지 않는 단순 유틸리티 예시
+            tokenPath: 'spacing',   // theme.spacing 값을 사용
+            rules: [
+                { selectorPattern: '.m-{key}', prop: ['margin'] },
+                { selectorPattern: '.mt-{key}', prop: ['margin-top'] },
+                { selectorPattern: '.mr-{key}', prop: ['margin-right'] },
+                { selectorPattern: '.mb-{key}', prop: ['margin-bottom'] },
+                { selectorPattern: '.ml-{key}', prop: ['margin-left'] },
+                { selectorPattern: '.mx-{key}', prop: ['margin-left', 'margin-right'] },
+                { selectorPattern: '.my-{key}', prop: ['margin-top', 'margin-bottom'] },
+
+                { selectorPattern: '.p-{key}', prop: ['padding'] },
+                { selectorPattern: '.pt-{key}', prop: ['padding-top'] },
+                { selectorPattern: '.pr-{key}', prop: ['padding-right'] },
+                { selectorPattern: '.pb-{key}', prop: ['padding-bottom'] },
+                { selectorPattern: '.p-{key}', prop: ['padding'] },
+                { selectorPattern: '.pl-{key}', prop: ['padding-left'] },
+                { selectorPattern: '.px-{key}', prop: ['padding-left', 'padding-right'] },
+                { selectorPattern: '.py-{key}', prop: ['padding-top', 'padding-bottom'] },
+            ]
+        },
+        {
+            name: 'colors', // 테마 토큰을 사용하지 않는 단순 유틸리티 예시
+            tokenPath: 'colors',   // theme.colors 값을 사용
+            rules: [
+                { selectorPattern: '.bg-{key}', prop: ['background-color'] },
+                { selectorPattern: '.text-{key}', prop: ['color'] },
+                { selectorPattern: '.border-{key}', prop: ['border-color'] },
             ]
         }
     ]

@@ -1,7 +1,7 @@
 
 const defaultConfig = require('./default-config.js');
-const { mergeDeep } = require('./utils.js');
-const { getPostCssUtilities } = require('./utility-generators.js');
+const { mergeDeep } = require('./utils/merge.js');
+const { getPostCssUtilities } = require('./utils/css-generator.js');
 
 module.exports = (userConfig = {}) => {
   return {

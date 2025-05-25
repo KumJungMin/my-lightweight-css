@@ -1,18 +1,20 @@
-const myUtilityGenerator = require("./postcss-plugins/my-utility-generator.js");
-const purgecss = require('@fullhuman/postcss-purgecss');
+import myUtilityGenerator from './src/plugins/postcss/index.js';
+import purgecss from '@fullhuman/postcss-purgecss';
+import autoprefixer from 'autoprefixer'
 
-const plugins = [myUtilityGenerator];
+const plugins = [myUtilityGenerator, autoprefixer];
 
 if (process.env.NODE_ENV === 'production') {
   plugins.push(
     purgecss.default({
-      content: ['./src/**/*.html', './src/**/*.js'],
+      content: ['./src/**/*.html', './src/**/*.vue'],
       defaultExtractor: content =>
         content.match(/[\w-/:]+(?<!:)/g) || [],
     })
   );
 }
 
-module.exports = {
-  plugins
+
+export default {
+  plugins,
 };

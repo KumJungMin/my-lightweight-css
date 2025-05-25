@@ -410,7 +410,7 @@ describe('My Custom Utility Generator Plugin', () => {
 
     expect(css).not.toMatch(/\.test-/); // nonExistentToken 유틸리티는 생성되지 않아야 함
     expect(css).toMatch(/\.p-1\s*{\s*padding:\s*4px\s*}/); // 정상 유틸리티는 생성
-    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('[MyCustomUtilityGenerator] Token path "this.path.does.not.exist" for utility "nonExistentToken" not found in theme. Skipping.'));
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('Token path \"this.path.does.not.exist\" for utility \"nonExistentToken\" is invalid. Skipping.'));
     console.warn.mockRestore();
   });
 
@@ -430,7 +430,7 @@ describe('My Custom Utility Generator Plugin', () => {
     };
     const css = await run('', userConfig);
     expect(css).not.toMatch(/\.problem-/);
-    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('[MyCustomUtilityGenerator] Token path "myValue" for utility "problematicUtility" is not an object. Skipping.'));
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('Token path \"myValue\" for utility \"problematicUtility\" is invalid. Skipping.'));
     console.warn.mockRestore();
   });
 

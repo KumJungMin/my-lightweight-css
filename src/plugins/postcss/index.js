@@ -1,15 +1,19 @@
+import postcss from 'postcss';
 import config from './config.js';
 import { getPostCssUtilities } from './utils.js';
 
 export default {
   postcssPlugin: 'css-utility-generator',
   Once(root) {
-      const generatedCssRules = getPostCssUtilities({ utilities: config.utilities, theme: config.theme });
+    const rules = getPostCssUtilities({
+      utilities: config.utilities,
+      theme: config.theme
+    });
+    if (!rules.length) return;
 
-      if (generatedCssRules.length > 0) {
-          root.append(...generatedCssRules);
-      }
+    const layer = postcss.atRule({ name: 'layer', params: 'utilities' });
+    layer.append(...rules);
+
+    root.append(layer);
   }
 };
-
-export const postcss = true;

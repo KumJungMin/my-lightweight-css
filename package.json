@@ -1,32 +1,29 @@
 {
-  "name": "my-css-utilities",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "files": [
-    "src",
-    "index.js",
-    "cli.js"
-  ],
+  "name": "vite-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "postcss src/css/main.css -o dist/style.css -w",
-    "build": "cross-env NODE_ENV=production postcss src/css/main.css -o dist/style.css",
-    "test": "jest"
+    "make:css": "echo '' > src/assets/utility.css && postcss src/assets/utility.css -o src/assets/utility.css",
+    "make:css:purge": "cross-env NODE_ENV=production postcss src/assets/utility.css -o src/assets/utility.css",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
   },
-  "keywords": [
-    "css",
-    "utilities",
-    "postcss",
-    "postcss-plugin"
-  ],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "vue": "^3.5.13"
+  },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^7.0.2",
+    "@vitejs/plugin-vue": "^5.2.3",
     "cross-env": "^7.0.3",
     "fs-extra": "^11.3.0",
-    "jest": "^29.7.0",
+    "jsdom": "^26.1.0",
     "postcss": "^8.5.3",
-    "postcss-cli": "^11.0.1"
+    "postcss-cli": "^11.0.1",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4"
   }
 }

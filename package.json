@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "make:css": "echo '' > src/assets/utility.css && postcss src/assets/utility.css -o src/assets/utility.css",
-    "make:css:purge": "cross-env NODE_ENV=production postcss src/assets/utility.css -o src/assets/utility.css",
+    "make:css": "node scripts/clear-css.js && postcss src/assets/utility.css -o src/assets/utility.css",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
